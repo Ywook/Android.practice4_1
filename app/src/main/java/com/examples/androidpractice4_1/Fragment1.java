@@ -125,6 +125,7 @@ public class Fragment1 extends Fragment {
             @Override
             public void onClick(View view) {
                 setTable();
+
             }
         });
 
@@ -154,12 +155,14 @@ public class Fragment1 extends Fragment {
 
     //테이블이 비어있으면 암것두 안보이게~
     void Emptytext(){
+        button.setEnabled(true);
         linearLayout.setVisibility(View.VISIBLE);
         Toast.makeText(getActivity(),"비어있는 테이블입니다.",Toast.LENGTH_SHORT).show();
         resetTextView();
     }
 
     void getTable(int i){
+        button.setEnabled(false);
         textView1.setText(table[i].getTableName());
         textView2.setText(table[i].getEnterTime());
         textView3.setText(table[i].getSpagetti());
@@ -170,12 +173,8 @@ public class Fragment1 extends Fragment {
 
     //테이블에 정보 입력하는 메소드
     void setTable(){
-        table[Selected] = new Restaurant(name[Selected], getTime());
 
-        textView1.setText(table[Selected].getTableName());
-        textView2.setText(table[Selected].getEnterTime());
-
-        callDialog("정보가 입력되었습니다.");
+        callDialog("정보가 입력되었습니다.",true);
 
     }
     //현재 시간 얻는 메소드
@@ -196,17 +195,20 @@ public class Fragment1 extends Fragment {
 
     //테이블 정보 수정 메소드
     void ChangeInformation(){
-        callDialog("정보가 수정되었습니다.");
+        callDialog("정보가 수정되었습니다.",false);
     }
 
     void resetMethod(){
+        button.setEnabled(true);
         btn[Selected].setText(table[Selected].getTableName()+("(비어있음)"));
         table[Selected] = null;
         resetTextView();
+
     }
 
     //AlertDialog를 통해서 정보 수정 및 정보 입력 하는 메소드
-    void callDialog(String s){
+    void callDialog(String s, boolean a){
+
         View dlgView = inflater.inflate(R.layout.dialog, null);
 
         AlertDialog.Builder dlg = new AlertDialog.Builder(getActivity());
@@ -218,9 +220,16 @@ public class Fragment1 extends Fragment {
 
         final String str = s;
 
+        final boolean b = a;
+
         dlg.setTitle("정보 입력")
                 .setView(dlgView)
-                .setNegativeButton("닫기",null)
+                .setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -228,6 +237,14 @@ public class Fragment1 extends Fragment {
                         String pizza = editText2.getText().toString();
 
                         int price = Integer.parseInt(spagetti)*10000+Integer.parseInt(pizza)*120000;
+
+                        if(b)   {
+                            table[Selected] = new Restaurant(name[Selected], getTime());
+                            textView1.setText(table[Selected].getTableName());
+                            textView2.setText(table[Selected].getEnterTime());
+
+                        }
+
 
                         table[Selected].setSpagetti(spagetti);
                         table[Selected].setPizza(pizza);
@@ -249,6 +266,7 @@ public class Fragment1 extends Fragment {
 
                         btn[Selected].setText(table[Selected].getTableName());
 
+                        button.setEnabled(false);
                         Snackbar.make(v, str, Snackbar.LENGTH_LONG).show();
 
                     }
