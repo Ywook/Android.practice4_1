@@ -143,9 +143,8 @@ public class Fragment1 extends Fragment {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(table[Selected] == null){
-                    Toast.makeText(getActivity(),"비어있는 테이블입니다.",Toast.LENGTH_LONG).show();
-                }else{
+                Toast.makeText(getActivity(), "초기화 되었습니다.", Toast.LENGTH_LONG).show();
+                if(table[Selected] != null) {
                     resetMethod();
                 }
             }
@@ -174,7 +173,7 @@ public class Fragment1 extends Fragment {
     //테이블에 정보 입력하는 메소드
     void setTable(){
 
-        callDialog("정보가 입력되었습니다.",true);
+        callDialog("정보가 입력되었습니다.",true, "정보 입력");
 
     }
     //현재 시간 얻는 메소드
@@ -195,7 +194,7 @@ public class Fragment1 extends Fragment {
 
     //테이블 정보 수정 메소드
     void ChangeInformation(){
-        callDialog("정보가 수정되었습니다.",false);
+        callDialog("정보가 수정되었습니다.",false, "정보 수정");
     }
 
     void resetMethod(){
@@ -207,7 +206,7 @@ public class Fragment1 extends Fragment {
     }
 
     //AlertDialog를 통해서 정보 수정 및 정보 입력 하는 메소드
-    void callDialog(String s, boolean a){
+    void callDialog(String s, boolean a, String s2){
 
         View dlgView = inflater.inflate(R.layout.dialog, null);
 
@@ -222,7 +221,7 @@ public class Fragment1 extends Fragment {
 
         final boolean b = a;
 
-        dlg.setTitle("정보 입력")
+        dlg.setTitle(s2)
                 .setView(dlgView)
                 .setNegativeButton("닫기", new DialogInterface.OnClickListener() {
                     @Override
